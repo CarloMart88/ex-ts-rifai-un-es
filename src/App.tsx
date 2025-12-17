@@ -26,10 +26,11 @@ type Chef = {
   firstName: string,
   lastName: string,
   age:number
+  birthDate:string
 }
 
 
-function isId(dati:unknown): dati is Recipesc {
+function isRecipe(dati:unknown): dati is Recipes {
   if(
     dati && typeof dati === "object" &&
     "id" in dati && typeof dati.id === "number" &&
@@ -43,28 +44,48 @@ function isId(dati:unknown): dati is Recipesc {
   }
 }
 
+function isChef(dati:unknown): dati is Chef {
+  if(
+    dati && typeof dati === "object" &&
+    "id" in dati && typeof dati.id === "number" &&
+    "firstName" in dati && typeof dati.firstName === "string" &&
+    "lastName" in dati && typeof dati.lastName === "string" &&
+    "age" in dati && typeof dati.age === "number" &&
+    "birthDate" in dati && typeof dati.birthDate === "string"
+
+
+  ){return true }else{
+    return false
+  }
+}
+
 
 async function getChefBirthday(id:number): Promise<string | null> {
   
   try{
   const response = await fetch(`https://dummyjson.com/recipes/${id}`)
   const resultId:unknown = await response.json()
-  if(isId(resultId))
-  console.log(resultId)
+        if(isRecipe(resultId)){
+          const { userId } = resultId
+              try{
+              const secondResponse = await fetch(`https://dummyjson.com/users/${userId}`)
+              const chef = await secondResponse.json()
+              console.log(chef)
+                if(isChef(chef)){ 
+                         const { birthDate } = chef
+                                console.log(`complimenti il giorno del compleanno dello chef è ${birthDate}`)
+                                 return birthDate
+                                 }
+            }catch(error:unknown)
+                  {
+                    if(typeof error === "string"){
+                      throw new Error("errore generico di tipo"+error)
+                    }else{
+                      return null
+                    }
 
-  const { userId } = resultId
-
-
-  const secondResponse = await fetch(`https://dummyjson.com/users/${userId}`)
-  const chef = await secondResponse.json()
-  console.log(chef)
-  
-  const {birthDate } = chef
-
-  console.log(birthDate)
-
-  return birthDate
-
+                  }
+                    }
   }
   catch(error:unknown)
   {
@@ -75,9 +96,6 @@ async function getChefBirthday(id:number): Promise<string | null> {
     }
 
   }
-  
-
-  
   
 }
 
