@@ -17,24 +17,41 @@ Utilizzare await per chiamare le API.
 Restituire una Promise con la data di nascita dello chef.
 Gestire gli errori con try/catch */
 
-async function getChefBirthday(id:number) {
+
+
+async function getChefBirthday(id:number): Promise<string> {
+
+  const response = await fetch(`https://dummyjson.com/recipes/${id}`)
+  const resultId = await response.json()
+  console.log(resultId)
+  const { userId } = resultId
+  const secondResponse = await fetch(`https://dummyjson.com/users/${userId}`)
+  const chef = await secondResponse.json()
+  console.log(chef)
+  const {birthDate } = chef
+
+  console.log(birthDate)
+  return birthDate 
+
   
   
 }
 
 
+
 function App() {
+
+
 
   return (
     
-   <div className="container">
+  <div className="container">
       <div className="row">
         <div className="col-12">
 
         </div>
       </div>
-    </div>
-  )
+    </div>  )
 }
 
 export default App
