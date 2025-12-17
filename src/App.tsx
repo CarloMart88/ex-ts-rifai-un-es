@@ -17,12 +17,23 @@ Utilizzare await per chiamare le API.
 Restituire una Promise con la data di nascita dello chef.
 Gestire gli errori con try/catch */
 
+async function getChefBirthday(id:number) {
+  
+  
+}
+
 
 function App() {
 
   return (
     
-    <><h1>ex-ts-rifai-un-es</h1></>
+   <div className="container">
+      <div className="row">
+        <div className="col-12">
+
+        </div>
+      </div>
+    </div>
   )
 }
 
