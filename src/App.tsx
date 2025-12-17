@@ -69,12 +69,14 @@ async function getChefBirthday(id:number): Promise<string | null> {
           const { userId } = resultId
               try{
               const secondResponse = await fetch(`https://dummyjson.com/users/${userId}`)
-              const chef = await secondResponse.json()
+              const chef:unknown = await secondResponse.json()
               console.log(chef)
                 if(isChef(chef)){ 
                          const { birthDate } = chef
                                 console.log(`complimenti il giorno del compleanno dello chef è ${birthDate}`)
                                  return birthDate
+                                 }else{
+                                  return null
                                  }
             }catch(error:unknown)
                   {
@@ -86,6 +88,7 @@ async function getChefBirthday(id:number): Promise<string | null> {
 
                   }
                     }
+                  return null
   }
   catch(error:unknown)
   {
