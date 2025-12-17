@@ -80,8 +80,8 @@ async function getChefBirthday(id:number): Promise<string | null> {
                                  }
             }catch(error:unknown)
                   {
-                    if(typeof error === "string"){
-                      throw new Error("errore generico di tipo"+error)
+                    if(error instanceof Error){
+                      throw new Error("errore generico di tipo"+error.message)
                     }else{
                       return null
                     }
@@ -92,8 +92,8 @@ async function getChefBirthday(id:number): Promise<string | null> {
   }
   catch(error:unknown)
   {
-    if(typeof error === "string"){
-      throw new Error("errore generico di tipo"+error)
+    if(error instanceof Error){
+      throw new Error("errore generico di tipo"+error.message)
     }else{
       return null
     }
