@@ -10,20 +10,46 @@ Usare userId per ottenere le informazioni dello chef da https://dummyjson.com/us
 
 Restituire la data di nascita dello chef
 
-Note del docente
-Scrivi la funzione getChefBirthday(id), che deve:
-Essere asincrona (async).
-Utilizzare await per chiamare le API.
-Restituire una Promise con la data di nascita dello chef.
-Gestire gli errori con try/catch */
+*/
+//creo un type guard personalizzato per resultId
 
+type Recipes = {
+  id: number,
+  name: string,
+  ingredients: string[],
+  userId:number
+}
+
+
+type Chef = {
+  id: number,
+  firstName: string,
+  lastName: string,
+  age:number
+}
+
+
+function isId(dati:unknown): dati is Recipesc {
+  if(
+    dati && typeof dati === "object" &&
+    "id" in dati && typeof dati.id === "number" &&
+    "name" in dati && typeof dati.name === "string" &&
+    "ingredients"  in dati &&  dati.ingredients instanceof Array &&
+    "userId" in dati && typeof dati.userId === "number" 
+
+
+  ){return true }else{
+    return false
+  }
+}
 
 
 async function getChefBirthday(id:number): Promise<string | null> {
   
   try{
   const response = await fetch(`https://dummyjson.com/recipes/${id}`)
-  const resultId = await response.json()
+  const resultId:unknown = await response.json()
+  if(isId(resultId))
   console.log(resultId)
 
   const { userId } = resultId
@@ -55,7 +81,7 @@ async function getChefBirthday(id:number): Promise<string | null> {
   
 }
 
-getChefBirthday(1)
+getChefBirthday(2)
 
 
 function App() {
