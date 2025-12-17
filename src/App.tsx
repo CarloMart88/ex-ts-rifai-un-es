@@ -19,24 +19,43 @@ Gestire gli errori con try/catch */
 
 
 
-async function getChefBirthday(id:number): Promise<string> {
-
+async function getChefBirthday(id:number): Promise<string | null> {
+  
+  try{
   const response = await fetch(`https://dummyjson.com/recipes/${id}`)
   const resultId = await response.json()
   console.log(resultId)
+
   const { userId } = resultId
+
+
   const secondResponse = await fetch(`https://dummyjson.com/users/${userId}`)
   const chef = await secondResponse.json()
   console.log(chef)
+  
   const {birthDate } = chef
 
   console.log(birthDate)
-  return birthDate 
+
+  return birthDate
+
+  }
+  catch(error:unknown)
+  {
+    if(typeof error === "string"){
+      throw new Error("errore generico di tipo"+error)
+    }else{
+      return null
+    }
+
+  }
+  
 
   
   
 }
 
+getChefBirthday(1)
 
 
 function App() {
